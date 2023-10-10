@@ -55,6 +55,8 @@ When installing the `kr8s` library, the following were installed as well (links 
 
 Some of these project probably deserves a deeper look as well... I need more time!
 
+For making a practical example project, I also installed the [Python FastAPI library](https://fastapi.tiangolo.com/). The example project will basically expose a REST API that will return some information from the cluster.
+
 The Python project was setup sing the _"[Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)"_ guidelines.
 
 # Collection of Observations
