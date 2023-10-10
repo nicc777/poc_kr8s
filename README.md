@@ -1,3 +1,8 @@
+
+- [Experimenting with kr8s](#experimenting-with-kr8s)
+- [Lab environment](#lab-environment)
+- [Collection of Observations](#collection-of-observations)
+
 # Experimenting with kr8s
 
 I stumbled on the [kr8s project](https://github.com/kr8s-org/kr8s) recently and thought it might be a far easier way to integrate with Kubernetes than using the more traditional [Python Kubernetes Client](https://github.com/kubernetes-client/python).
@@ -49,6 +54,8 @@ When installing the `kr8s` library, the following were installed as well (links 
 * [yarl](https://github.com/aio-libs/yarl) version 1.9.2
 
 Some of these project probably deserves a deeper look as well... I need more time!
+
+The Python project was setup sing the _"[Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)"_ guidelines.
 
 # Collection of Observations
 
