@@ -1,0 +1,99 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kr8s-poc
+  labels:
+    name: kr8s-poc
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kr8s-poc-serviceaccount
+  namespace: kr8s-poc
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kr8s-poc-clusterrole
+  namespace: kr8s-poc
+rules:
+- apiGroups: ["", "metrics.k8s.io"]
+  resources: ["pods", "nodes"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: kr8s-poc-global-clusterrolebinding
+  namespace: kr8s-poc
+subjects:
+- kind: ServiceAccount
+  name: kr8s-poc-serviceaccount
+  namespace: kr8s-poc
+- apiGroup: rbac.authorization.k8s.io
+  kind: User
+  name: system:anonymous
+roleRef: 
+  kind: ClusterRole
+  name: kr8s-poc-clusterrole
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kr8s-poc-deployment
+  namespace: kr8s-poc
+spec:
+  selector:
+    matchLabels:
+      app: kr8s-poc-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: kr8s-poc-app
+    spec:
+      serviceAccountName: kr8s-poc-serviceaccount
+      imagePullSecrets:
+      - name: aws-registry
+      containers:
+      - name: kr8s-poc-app
+        image: nicc777/kr8s_poc:v0.0.1
+        resources:
+          requests:
+            memory: "250Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          successThreshold: 1
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        env:
+        - name: DEBUG
+          value: "1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kr8s-poc-app-service
+  namespace: kr8s-poc
+spec:
+  selector:
+    app: kr8s-poc-app
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

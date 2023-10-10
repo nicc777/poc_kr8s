@@ -59,6 +59,12 @@ For making a practical example project, I also installed the [Python FastAPI lib
 
 The Python project was setup sing the _"[Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/)"_ guidelines.
 
+The Docker image was built with the following command:
+
+```shell
+docker build --no-cache -t kr8s_poc .
+```
+
 # Collection of Observations
 
 This is a list of observations I made as I went through the process of testing. 
