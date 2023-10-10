@@ -49,7 +49,7 @@ ENV PORT 8080
 
 # Install the app
 WORKDIR /usr/src/app
-RUN pip3 install dist/*.tar.gz
+RUN pip3 install dist/kr8s_poc-0.0.2.tar.gz
 
 # Operational Configuration
 EXPOSE 8080-8090
