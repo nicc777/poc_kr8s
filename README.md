@@ -65,6 +65,10 @@ The Docker image was built with the following command:
 docker build --no-cache -t kr8s_poc .
 ```
 
+I have created a project on Docker Hub for hosting the image: https://hub.docker.com/r/nicc777/kr8s_poc
+
+The Kubernetes manifest in this repository will reference the image published on Docker Hub.
+
 # Collection of Observations
 
 This is a list of observations I made as I went through the process of testing. 
