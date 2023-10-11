@@ -9,10 +9,11 @@ LABEL Description="A container for the production hosting of the pykles REST API
 
 # Prep Python
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get upgrade -y
-RUN apt-get install libterm-readline-gnu-perl apt-utils -y
-RUN apt-get install -y python3 python3-pip
-RUN pip3 install fastapi "uvicorn[standard]" kr8s
+RUN apt update && apt-get upgrade -y
+RUN apt install -y libterm-readline-gnu-perl apt-utils
+RUN apt install -y python3 python3-pip python3-venv
+# RUN apt install -y python3.10-venv
+# RUN pip3 install fastapi "uvicorn[standard]" kr8s
 
 ###############################################################################
 ###                                                                         ###
@@ -23,14 +24,15 @@ FROM kr8s-poc-rest-base AS kr8s-poc-rest-build
 
 LABEL Description="Intermediate image for building a Python App" Vendor="none" Version="1.0"
 
-RUN pip3 install --user virtualenv
-RUN pip3 install --upgrade setuptools 
-RUN pip3 install build
+# RUN pip3 install --user virtualenv
+# RUN pip3 install --upgrade setuptools 
+# RUN pip3 install build
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 COPY ./ ./
-RUN python3 -m build
-RUN pip3 uninstall -y build setuptools virtualenv
+# RUN python3 -m build
+# RUN pip3 uninstall -y build setuptools virtualenv
+
 
 ###############################################################################
 ###                                                                         ###
@@ -49,10 +51,12 @@ ENV PORT 8080
 
 # Install the app
 WORKDIR /usr/src/app
-RUN pip3 install dist/kr8s_poc-0.0.2.tar.gz
+# RUN pip3 install dist/kr8s_poc-0.0.2.tar.gz
+RUN sh install.sh
 
 # Operational Configuration
 EXPOSE 8080-8090
-CMD uvicorn --host 0.0.0.0 --port $PORT --workers 4 --no-access-log kr8s_poc.main_server:app
+# CMD uvicorn --host 0.0.0.0 --port $PORT --workers 4 --no-access-log kr8s_poc.main_server:app
+CMD sh run.sh
 
 
