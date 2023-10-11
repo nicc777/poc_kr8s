@@ -16,6 +16,11 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
+dependencies = [
+  "kr8s",
+  "uvicorn[standard]",
+  "fastapi",
+]
 
 [project.urls]
 "Homepage" = "https://github.com/nicc777/poc_kr8s"
