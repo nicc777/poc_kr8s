@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from kr8s.objects import Pod
 import kr8s
+import logging
 
 
+logger = logging.getLogger(__name__)
 app = FastAPI()
 
 
@@ -16,6 +18,7 @@ async def root():
 async def namespaces():
     namespaces = list()
     for namespace in await kr8s.asyncio.get('namespaces'):
+        logger.info('namespace={}'.format(namespace))
         namespaces.append({"Name": namespace.metadata.name,})
     return {"Namespaces": namespaces}
 
@@ -24,7 +27,12 @@ async def namespaces():
 async def namespaced_pods(namespace):
     pods = list()
     for pod in await kr8s.asyncio.get("pods", namespace=namespace):
-        pods.append({"Name": pod.metadata.name,})
+        logger.info('pod={}'.format(pod))
+        pods.append(
+            {
+                "Name": pod.metadata.name,
+            }
+        )
     return {
         "Namespace": namespace,
         "Pods": pods,
