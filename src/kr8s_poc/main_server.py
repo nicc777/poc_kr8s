@@ -2,10 +2,20 @@ from fastapi import FastAPI
 from kr8s.objects import Pod
 import kr8s
 import logging
+import sys
 
 
 logger = logging.getLogger(__name__)
 app = FastAPI()
+
+
+log_format = '%(asctime)s %(levelname)s - %(message)s'
+log_level = logging.INFO
+formatter = logging.Formatter(log_format)
+h = logging.StreamHandler(sys.stdout)
+h.setLevel(log_level)
+h.setFormatter(formatter)
+logger.addHandler(h)
 
 
 # This is also our liveness and readiness probe URI
