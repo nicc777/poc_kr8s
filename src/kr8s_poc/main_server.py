@@ -32,7 +32,6 @@ async def namespaces():
     logger = get_logger()
     for namespace in await kr8s.asyncio.get('namespaces'):
         logger.info('namespace={}'.format(namespace))
-        print('PRINT: namespace={}'.format(namespace))
         namespaces.append({"Name": namespace.metadata.name,})
     return {"Namespaces": namespaces}
 
@@ -43,7 +42,6 @@ async def namespaced_pods(namespace):
     logger = get_logger()
     for pod in await kr8s.asyncio.get("pods", namespace=namespace):
         logger.info('pod={}'.format(pod))
-        print('PRINT: pod={}'.format(pod))
         pods.append(
             {
                 "Name": pod.metadata.name,
