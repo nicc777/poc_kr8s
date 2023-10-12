@@ -31,7 +31,7 @@ COPY ./ ./
 RUN python3 -m build
 
 # Install the app
-RUN pip3 install dist/kr8s_poc-0.0.10.tar.gz
+RUN pip3 install dist/kr8s_poc-0.0.11.tar.gz
 
 # Cleanup
 RUN pip3 uninstall -y build setuptools virtualenv
@@ -54,6 +54,7 @@ ENV DEBUG "0"
 ENV PORT 8080
 WORKDIR /usr/src/app
 EXPOSE 8080-8090
-CMD uvicorn --host 0.0.0.0 --port $PORT --workers 4 --no-access-log kr8s_poc.main_server:app
+# CMD uvicorn --host 0.0.0.0 --port $PORT --workers 4 --no-access-log kr8s_poc.main_server:app
+CMD uvicorn --host 0.0.0.0 --port $PORT --workers 4 kr8s_poc.main_server:app
 
 
