@@ -15,7 +15,7 @@ async def root():
 @app.get('/namespaces')
 async def namespaces():
     namespaces = list()
-    for namespace in kr8s.asyncio.get('namespaces'):
+    for namespace in await kr8s.asyncio.get('namespaces'):
         namespaces.append(namespace)
     return {"Namespaces": namespaces}
 
