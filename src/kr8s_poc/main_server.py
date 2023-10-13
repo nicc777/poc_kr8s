@@ -36,9 +36,9 @@ async def namespaces():
             namespace_d = namespace.__dict__
             logger.info('namespace_d={}   type={}'.format(json.dumps(namespace_d, default=str), type(namespace_d)))
             namespaces.append({"Name": namespace.metadata.name, "RawObject": namespace_d,})
-            result = {"Namespaces": namespaces}
-            logger.info('result={}'.format(result))
-            logger.info('returning result: {}'.format(json.dumps(result, default=str)))
+        result = {"Namespaces": namespaces}
+        logger.info('result={}'.format(result))
+        logger.info('returning result: {}'.format(json.dumps(result, default=str)))
     except:
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
     return result
@@ -54,9 +54,9 @@ async def namespaced_pods(namespace):
             pod_d = pod.__dict__
             logger.info('pod_d={}   type={}'.format(json.dumps(pod_d, default=str), type(pod_d)))
             pods.append({"Name": pod.metadata.name, "RawObject": pod_d,})
-            result = {"Namespace": namespace,"Pods": pods,}
-            logger.info('result={}'.format(result))
-            logger.info('returning result: {}'.format(json.dumps(result, default=str)))
+        result = {"Namespace": namespace,"Pods": pods,}
+        logger.info('result={}'.format(result))
+        logger.info('returning result: {}'.format(json.dumps(result, default=str)))
     except:
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
     return result
