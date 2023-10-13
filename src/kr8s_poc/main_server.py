@@ -3,6 +3,7 @@ from kr8s.objects import Pod, Namespace
 import kr8s
 import logging
 import sys
+import json
 
 
 logger = logging.getLogger(__name__)
@@ -30,9 +31,9 @@ async def namespaces():
     
     for namespace in await kr8s.asyncio.get('namespaces'):
         logger.info('namespace={}   type={}'.format(namespace, type(namespace)))
-        namespace_d = namespace.__dict__()
-        logger.info('namespace_d={}   type={}'.format(namespace_d, type(namespace_d)))
-        namespaces.append({"Name": namespace.metadata.name,})
+        namespace_d = namespace.__dict__
+        logger.info('namespace_d={}   type={}'.format(json.dumps(namespace_d, default=str), type(namespace_d)))
+        namespaces.append({"Name": namespace.metadata.name, "RawObject": namespace_d,})
     return {"Namespaces": namespaces}
 
 
@@ -41,13 +42,8 @@ async def namespaced_pods(namespace):
     pods = list()
     for pod in await kr8s.asyncio.get("pods", namespace=namespace):
         logger.info('pod={}   type={}'.format(pod, type(pod)))
-        pods.append(
-            {
-                "Name": pod.metadata.name,
-            }
-        )
-    return {
-        "Namespace": namespace,
-        "Pods": pods,
-    }
+        pod_d = pod.__dict__
+        logger.info('pod_d={}   type={}'.format(json.dumps(pod_d, default=str), type(pod_d)))
+        pods.append({"Name": pod.metadata.name, "RawObject": pod_d,})
+    return {"Namespace": namespace,"Pods": pods,}
 

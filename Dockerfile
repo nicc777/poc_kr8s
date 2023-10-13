@@ -31,7 +31,7 @@ COPY ./ ./
 RUN python3 -m build
 
 # Install the app
-RUN pip3 install dist/kr8s_poc-0.0.14.tar.gz
+RUN pip3 install dist/kr8s_poc-0.0.16.tar.gz
 
 # Cleanup
 RUN pip3 uninstall -y build setuptools virtualenv
