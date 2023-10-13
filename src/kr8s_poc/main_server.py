@@ -4,6 +4,7 @@ import kr8s
 import logging
 import sys
 import json
+import traceback
 
 
 logger = logging.getLogger(__name__)
@@ -28,22 +29,27 @@ async def root():
 @app.get('/namespaces')
 async def namespaces():
     namespaces = list()
-    
-    for namespace in await kr8s.asyncio.get('namespaces'):
-        logger.info('namespace={}   type={}'.format(namespace, type(namespace)))
-        namespace_d = namespace.__dict__
-        logger.info('namespace_d={}   type={}'.format(json.dumps(namespace_d, default=str), type(namespace_d)))
-        namespaces.append({"Name": namespace.metadata.name, "RawObject": namespace_d,})
+    try:
+        for namespace in await kr8s.asyncio.get('namespaces'):
+            logger.info('namespace={}   type={}'.format(namespace, type(namespace)))
+            namespace_d = namespace.__dict__
+            logger.info('namespace_d={}   type={}'.format(json.dumps(namespace_d, default=str), type(namespace_d)))
+            namespaces.append({"Name": namespace.metadata.name, "RawObject": namespace_d,})
+    except:
+        logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
     return {"Namespaces": namespaces}
 
 
 @app.get('/namespace/{namespace}/pods')
 async def namespaced_pods(namespace):
     pods = list()
-    for pod in await kr8s.asyncio.get("pods", namespace=namespace):
-        logger.info('pod={}   type={}'.format(pod, type(pod)))
-        pod_d = pod.__dict__
-        logger.info('pod_d={}   type={}'.format(json.dumps(pod_d, default=str), type(pod_d)))
-        pods.append({"Name": pod.metadata.name, "RawObject": pod_d,})
+    try:
+        for pod in await kr8s.asyncio.get("pods", namespace=namespace):
+            logger.info('pod={}   type={}'.format(pod, type(pod)))
+            pod_d = pod.__dict__
+            logger.info('pod_d={}   type={}'.format(json.dumps(pod_d, default=str), type(pod_d)))
+            pods.append({"Name": pod.metadata.name, "RawObject": pod_d,})
+    except:
+        logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
     return {"Namespace": namespace,"Pods": pods,}
 
