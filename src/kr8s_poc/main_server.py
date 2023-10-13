@@ -29,33 +29,35 @@ async def root():
 @app.get('/namespaces')
 async def namespaces():
     namespaces = list()
+    result = dict()
     try:
         for namespace in await kr8s.asyncio.get('namespaces'):
             logger.info('namespace={}   type={}'.format(namespace, type(namespace)))
             namespace_d = namespace.__dict__
             logger.info('namespace_d={}   type={}'.format(json.dumps(namespace_d, default=str), type(namespace_d)))
             namespaces.append({"Name": namespace.metadata.name, "RawObject": namespace_d,})
+            result = {"Namespaces": namespaces}
+            logger.info('result={}'.format(result))
+            logger.info('returning result: {}'.format(json.dumps(result, default=str)))
     except:
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
-    result = {"Namespaces": namespaces}
-    logger.info('result={}'.format(result))
-    logger.info('returning result: {}'.format(json.dumps(result, default=str)))
     return result
 
 
 @app.get('/namespace/{namespace}/pods')
 async def namespaced_pods(namespace):
     pods = list()
+    result = dict()
     try:
         for pod in await kr8s.asyncio.get("pods", namespace=namespace):
             logger.info('pod={}   type={}'.format(pod, type(pod)))
             pod_d = pod.__dict__
             logger.info('pod_d={}   type={}'.format(json.dumps(pod_d, default=str), type(pod_d)))
             pods.append({"Name": pod.metadata.name, "RawObject": pod_d,})
+            result = {"Namespace": namespace,"Pods": pods,}
+            logger.info('result={}'.format(result))
+            logger.info('returning result: {}'.format(json.dumps(result, default=str)))
     except:
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
-    result = {"Namespace": namespace,"Pods": pods,}
-    logger.info('result={}'.format(result))
-    logger.info('returning result: {}'.format(json.dumps(result, default=str)))
     return result
     
