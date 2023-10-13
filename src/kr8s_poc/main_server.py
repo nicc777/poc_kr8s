@@ -5,16 +5,16 @@ import logging
 import sys
 
 
-def get_logger():
-    logger = logging.getLogger(__name__)
-    log_format = '%(asctime)s %(levelname)s - %(message)s'
-    log_level = logging.INFO
-    formatter = logging.Formatter(log_format)
-    h = logging.StreamHandler(sys.stdout)
-    h.setLevel(log_level)
-    h.setFormatter(formatter)
-    logger.addHandler(h)
-    return logger
+# def get_logger():
+logger = logging.getLogger(__name__)
+log_format = '%(asctime)s %(levelname)s - %(message)s'
+log_level = logging.INFO
+formatter = logging.Formatter(log_format)
+h = logging.StreamHandler(sys.stdout)
+h.setLevel(log_level)
+h.setFormatter(formatter)
+logger.addHandler(h)
+    # return logger
 
 
 app = FastAPI()
@@ -29,9 +29,9 @@ async def root():
 @app.get('/namespaces')
 async def namespaces():
     namespaces = list()
-    logger = get_logger()
+    #logger = get_logger()
     for namespace in await kr8s.asyncio.get('namespaces'):
-        logger.info('namespace={}'.format(namespace))
+        logger.info('namespace={}   type={}'.format(namespace, type(namespace)))
         namespaces.append({"Name": namespace.metadata.name,})
     return {"Namespaces": namespaces}
 
@@ -39,9 +39,9 @@ async def namespaces():
 @app.get('/namespace/{namespace}/pods')
 async def namespaced_pods(namespace):
     pods = list()
-    logger = get_logger()
+    #logger = get_logger()
     for pod in await kr8s.asyncio.get("pods", namespace=namespace):
-        logger.info('pod={}'.format(pod))
+        logger.info('pod={}   type={}'.format(pod, type(pod)))
         pods.append(
             {
                 "Name": pod.metadata.name,
