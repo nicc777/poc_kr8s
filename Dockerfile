@@ -54,7 +54,6 @@ ENV DEBUG "0"
 ENV PORT 8080
 WORKDIR /usr/src/app
 EXPOSE 8080-8090
-# CMD uvicorn --host 0.0.0.0 --port $PORT --workers 4 --no-access-log kr8s_poc.main_server:app
 CMD uvicorn --host 0.0.0.0 --port $PORT --workers 4 --log-config /usr/src/app/logging_config.yaml kr8s_poc.main_server:app
 
 
