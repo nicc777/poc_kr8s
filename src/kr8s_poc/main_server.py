@@ -37,7 +37,10 @@ async def namespaces():
             namespaces.append({"Name": namespace.metadata.name, "RawObject": namespace_d,})
     except:
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
-    return {"Namespaces": namespaces}
+    result = {"Namespaces": namespaces}
+    logger.info('result={}'.format(result))
+    logger.info('returning result: {}'.format(json.dumps(result, default=str)))
+    return result
 
 
 @app.get('/namespace/{namespace}/pods')
@@ -51,5 +54,8 @@ async def namespaced_pods(namespace):
             pods.append({"Name": pod.metadata.name, "RawObject": pod_d,})
     except:
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
-    return {"Namespace": namespace,"Pods": pods,}
-
+    result = {"Namespace": namespace,"Pods": pods,}
+    logger.info('result={}'.format(result))
+    logger.info('returning result: {}'.format(json.dumps(result, default=str)))
+    return result
+    
