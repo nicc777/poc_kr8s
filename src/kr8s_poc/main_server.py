@@ -1,10 +1,11 @@
-from fastapi import FastAPI
-from kr8s.objects import Pod, Namespace
-import kr8s
 import logging
 import sys
+import os
 import json
 import traceback
+import uvicorn
+from fastapi import FastAPI
+import kr8s
 
 
 logger = logging.getLogger(__name__)
@@ -61,3 +62,17 @@ async def namespaced_pods(namespace):
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
     return result
     
+
+if __name__ == '__main__':
+    current_file_dir = os.path.dirname(os.path.realpath(__file__))   
+    src_part = '{}src{}'.format(os.sep, os.sep)
+    if src_part in current_file_dir:
+        log_config = '{}'.format(os.sep).join(current_file_dir.split(os.sep)[0:-2])
+        log_config = '{}{}logging_config.yaml'.format(log_config, os.sep)
+        print('Using LOG config from {}'.format(log_config))
+        uvicorn.run(app, host="0.0.0.0", port=9080, workers=1, log_config=log_config)
+    else:
+        print('Using DEFAULT LOG CONFIG')
+        uvicorn.run(app, host="0.0.0.0", port=9080, workers=1)
+    
+
