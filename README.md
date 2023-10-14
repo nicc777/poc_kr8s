@@ -113,7 +113,7 @@ This is a list of observations I made as I went through the process of testing.
 | I originally could not get logging to work properly, but it seems by supplying `uvicorn` with a YAML log configuration file works very well. |
 | Since I use VSCode I kept my `.vscode` directory in the repo. This should be a good example of how to test Python application. For local testing I create a Python virtual environment in the project root directory using the command `python3 -m venv venv`. Once the virtual environment is activated, install dependencies with `pip3 install -r requirements.txt` |
 | Authentication in cluster is picked up seamlessly by using a service account. From outside the cluster, by adding an environment variable `KUBECONFIG` pointing to the Kubernetes configuration file to use, credentials was also seamlessly picked up and used with no apparent issues. |
-| I am not a big expert on asynchronous development, but the only issue I had was with variable scope. Originally I had the REST API return an error 500 even though the logs I had showed the result dictionary be created perfectly ok. It turns out that be creating a true copy (using the `copy` Python built-in library) to copy the initial result set from the `kr8s.asyncio.et()` call solved the problem. |
+| I am not a big expert on asynchronous development, but the only issue I had was with variable scope. Originally I had the REST API return an error 500 even though the logs I had showed the result dictionary be created perfectly ok. It turns out that be creating a true copy (using the `copy` Python built-in library) to copy the initial result set from the `kr8s.asyncio.get()` call solved the problem. |
 
 # Overall Conclusion
 
