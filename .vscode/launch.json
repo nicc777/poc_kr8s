@@ -5,6 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Main Server",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/kr8s_poc/main_server.py",
+            "args": [],
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "env": {
+                "DEBUG": "1",
+                "KUBECONFIG": "/home/nicc777/tmp/microk8s.config",
+            }
+        },
+        {
             "name": "Python: Current File",
             "type": "python",
             "request": "launch",
