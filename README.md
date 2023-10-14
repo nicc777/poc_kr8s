@@ -10,6 +10,9 @@ I stumbled on the [kr8s project](https://github.com/kr8s-org/kr8s) recently and 
 
 In this repository I host a simple Project to deploy as a Pod (or perhaps even several deployments of different pods) to take kr8s for a test drive.
 
+> **Note**
+> I also created a [blog post](https://www.nicc777.com/blog/2023/2023-10-14.html) briefly discussing this experiment.
+
 # Lab environment
 
 The experimental code was tested on Ubuntu Server version 22.04 running [microk8s](https://microk8s.io/) with Kubernetes version 1.27
