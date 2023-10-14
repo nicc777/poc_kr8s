@@ -9,12 +9,13 @@
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/src/kr8s_poc/main_server.py",
+            "python": "${workspaceFolder}/venv/bin/python3",
             "args": [],
             "console": "integratedTerminal",
-            "justMyCode": false,
+            "justMyCode": true,
             "env": {
                 "DEBUG": "1",
-                "KUBECONFIG": "/home/nicc777/tmp/microk8s.config",
+                "KUBECONFIG": "${workspaceFolder}/microk8s.config"
             }
         },
         {
@@ -23,7 +24,11 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": true,
+            "env": {
+                "DEBUG": "1",
+                "KUBECONFIG": "${workspaceFolder}/microk8s.config"
+            }
         }
     ]
 }
