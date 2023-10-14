@@ -46,7 +46,7 @@ async def namespaces():
             namespace_d = namespace.__dict__
             if '_raw' in namespace_d:
                 tmp_raw_data = copy.deepcopy(namespace_d['_raw'])
-                logger.info('raw_data={}   type={}'.format(json.dumps(tmp_raw_data, default=str), type(tmp_raw_data)))
+                logger.debug('raw_data={}   type={}'.format(json.dumps(tmp_raw_data, default=str), type(tmp_raw_data)))
                 if 'metadata' in tmp_raw_data:
                     if 'creationTimestamp' in tmp_raw_data['metadata']:
                         raw_data['CreateTimestamp'] = tmp_raw_data['metadata']['creationTimestamp']
@@ -54,8 +54,7 @@ async def namespaces():
                         raw_data['Labels'] = tmp_raw_data['metadata']['labels']
             namespaces.append({"Name": namespace.metadata.name, "Metadata": raw_data,})
         result = {"Namespaces": namespaces}
-        logger.info('result={}'.format(result))
-        logger.info('returning result: {}'.format(json.dumps(result, default=str)))
+        logger.debug('returning result: {}'.format(json.dumps(result, default=str)))
     except:
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
     return result
@@ -68,13 +67,23 @@ async def namespaced_pods(namespace):
     logger.info('FUNCTION namespaced_pods() CALLED')
     try:
         for pod in await kr8s.asyncio.get("pods", namespace=namespace):
+            raw_meta_data = dict()
+            raw_status_data = dict()
             logger.info('pod={}   type={}'.format(pod, type(pod)))
             pod_d = pod.__dict__
-            logger.info('pod_d={}   type={}'.format(json.dumps(pod_d, default=str), type(pod_d)))
-            pods.append({"Name": pod.metadata.name, "RawObject": pod_d,})
+            if '_raw' in pod_d:
+                tmp_raw_data = copy.deepcopy(pod_d['_raw'])
+                logger.debug('tmp_raw_data={}   type={}'.format(json.dumps(tmp_raw_data, default=str), type(tmp_raw_data)))
+                if 'metadata' in tmp_raw_data:
+                    if 'creationTimestamp' in tmp_raw_data['metadata']:
+                        raw_meta_data['CreateTimestamp'] = tmp_raw_data['metadata']['creationTimestamp']
+                    if 'labels' in tmp_raw_data['metadata']:
+                        raw_meta_data['Labels'] = tmp_raw_data['metadata']['labels']
+                if 'status' in tmp_raw_data:
+                   raw_status_data = tmp_raw_data['status']
+            pods.append({"Name": pod.metadata.name, "Metadata": raw_meta_data, "Status": raw_status_data,})
         result = {"Namespace": namespace,"Pods": pods,}
-        logger.info('result={}'.format(result))
-        logger.info('returning result: {}'.format(json.dumps(result, default=str)))
+        logger.debug('returning result: {}'.format(json.dumps(result, default=str)))
     except:
         logger.error('EXCEPTION: {}'.format(traceback.format_exc()))
     return result
