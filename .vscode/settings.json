@@ -1,8 +1,22 @@
 {
     "cSpell.words": [
+        "aiohttp",
+        "aiosignal",
+        "anyio",
         "asyncio",
+        "certifi",
+        "exceptiongroup",
         "fastapi",
+        "frozenlist",
+        "httpcore",
+        "httpx",
+        "idna",
         "kubeconfig",
-        "uvicorn"
+        "microk",
+        "multidict",
+        "pyyaml",
+        "sniffio",
+        "uvicorn",
+        "yarl"
     ]
 }
