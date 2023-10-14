@@ -100,7 +100,7 @@ To get more information on pods running in a particular namespace try something 
 curl -s -X 'GET' -H 'accept: application/json' 'http://localhost:9080/namespace/kr8s-poc/pods'
 ```
 
-To view the loge of the running pod, try:
+To view the logs of the running pod, try:
 
 ```shell
 kubectl logs kr8s-poc-deployment-76d5cf4995-clz8f -n kr8s-poc | grep -v "GET / HTTP/1.1"
