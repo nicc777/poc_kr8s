@@ -41,18 +41,16 @@ async def namespaces():
     logger.info('FUNCTION namespaces() CALLED')
     try:
         for namespace in await kr8s.asyncio.get('namespaces', api=kube_api.api):
-            raw_data = dict()
+            namespace_data = dict()
             logger.info('namespace={}   type={}'.format(namespace, type(namespace)))
-            namespace_d = namespace.__dict__
-            if '_raw' in namespace_d:
-                tmp_raw_data = copy.deepcopy(namespace_d['_raw'])
-                logger.debug('raw_data={}   type={}'.format(json.dumps(tmp_raw_data, default=str), type(tmp_raw_data)))
-                if 'metadata' in tmp_raw_data:
-                    if 'creationTimestamp' in tmp_raw_data['metadata']:
-                        raw_data['CreateTimestamp'] = tmp_raw_data['metadata']['creationTimestamp']
-                    if 'labels' in tmp_raw_data['metadata']:
-                        raw_data['Labels'] = tmp_raw_data['metadata']['labels']
-            namespaces.append({"Name": namespace.metadata.name, "Metadata": raw_data,})
+            namespace_raw_data = copy.deepcopy(namespace.raw)
+            logger.debug('raw_data={}   type={}'.format(json.dumps(namespace_raw_data, default=str), type(namespace_raw_data)))
+            if 'metadata' in namespace_raw_data:
+                if 'creationTimestamp' in namespace_raw_data['metadata']:
+                    namespace_data['CreateTimestamp'] = namespace_raw_data['metadata']['creationTimestamp']
+                if 'labels' in namespace_raw_data['metadata']:
+                    namespace_data['Labels'] = namespace_raw_data['metadata']['labels']
+            namespaces.append({"Name": namespace.metadata.name, "Metadata": namespace_data,})
         result = {"Namespaces": namespaces}
         logger.debug('returning result: {}'.format(json.dumps(result, default=str)))
     except:
@@ -67,21 +65,19 @@ async def namespaced_pods(namespace):
     logger.info('FUNCTION namespaced_pods() CALLED')
     try:
         for pod in await kr8s.asyncio.get("pods", namespace=namespace):
-            raw_meta_data = dict()
-            raw_status_data = dict()
+            pod_meta_data = dict()
+            pod_status_data = dict()
             logger.info('pod={}   type={}'.format(pod, type(pod)))
-            pod_d = pod.__dict__
-            if '_raw' in pod_d:
-                tmp_raw_data = copy.deepcopy(pod_d['_raw'])
-                logger.debug('tmp_raw_data={}   type={}'.format(json.dumps(tmp_raw_data, default=str), type(tmp_raw_data)))
-                if 'metadata' in tmp_raw_data:
-                    if 'creationTimestamp' in tmp_raw_data['metadata']:
-                        raw_meta_data['CreateTimestamp'] = tmp_raw_data['metadata']['creationTimestamp']
-                    if 'labels' in tmp_raw_data['metadata']:
-                        raw_meta_data['Labels'] = tmp_raw_data['metadata']['labels']
-                if 'status' in tmp_raw_data:
-                   raw_status_data = tmp_raw_data['status']
-            pods.append({"Name": pod.metadata.name, "Metadata": raw_meta_data, "Status": raw_status_data,})
+            pod_raw_data = copy.deepcopy(pod.raw)
+            logger.debug('tmp_raw_data={}   type={}'.format(json.dumps(pod_raw_data, default=str), type(pod_raw_data)))
+            if 'metadata' in pod_raw_data:
+                if 'creationTimestamp' in pod_raw_data['metadata']:
+                    pod_meta_data['CreateTimestamp'] = pod_raw_data['metadata']['creationTimestamp']
+                if 'labels' in pod_raw_data['metadata']:
+                    pod_meta_data['Labels'] = pod_raw_data['metadata']['labels']
+            if 'status' in pod_raw_data:
+                pod_status_data = pod_raw_data['status']
+            pods.append({"Name": pod.metadata.name, "Metadata": pod_meta_data, "Status": pod_status_data,})
         result = {"Namespace": namespace,"Pods": pods,}
         logger.debug('returning result: {}'.format(json.dumps(result, default=str)))
     except:
