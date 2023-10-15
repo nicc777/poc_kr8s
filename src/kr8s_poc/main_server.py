@@ -44,7 +44,7 @@ async def namespaces():
             namespace_data = dict()
             logger.info('namespace={}   type={}'.format(namespace, type(namespace)))
             namespace_raw_data = copy.deepcopy(namespace.raw)
-            logger.debug('raw_data={}   type={}'.format(json.dumps(namespace_raw_data, default=str), type(namespace_raw_data)))
+            logger.debug('namespace_raw_data={}   type={}'.format(json.dumps(namespace_raw_data, default=str), type(namespace_raw_data)))
             if 'metadata' in namespace_raw_data:
                 if 'creationTimestamp' in namespace_raw_data['metadata']:
                     namespace_data['CreateTimestamp'] = namespace_raw_data['metadata']['creationTimestamp']
@@ -69,7 +69,7 @@ async def namespaced_pods(namespace):
             pod_status_data = dict()
             logger.info('pod={}   type={}'.format(pod, type(pod)))
             pod_raw_data = copy.deepcopy(pod.raw)
-            logger.debug('tmp_raw_data={}   type={}'.format(json.dumps(pod_raw_data, default=str), type(pod_raw_data)))
+            logger.debug('pod_raw_data={}   type={}'.format(json.dumps(pod_raw_data, default=str), type(pod_raw_data)))
             if 'metadata' in pod_raw_data:
                 if 'creationTimestamp' in pod_raw_data['metadata']:
                     pod_meta_data['CreateTimestamp'] = pod_raw_data['metadata']['creationTimestamp']
